@@ -29,7 +29,8 @@ function init() {
         y: canvasHeight / 2,
         width: 30,
         height: 30,
-        dy: 0
+        dy: 0,
+        fuel: 100 // Initial fuel level
     };
     obstacles = [];
     fuelCells = [];
@@ -43,11 +44,18 @@ function drawRocket() {
     ctx.fillRect(rocket.x, rocket.y, rocket.width, rocket.height);
 }
 
-// Update the rocket's position based on gravity and thrust
+// Update the rocket's status
 function updateRocket() {
     rocket.dy += gravity;
     rocket.dy = Math.min(rocket.dy, maxFallSpeed);
     rocket.y += rocket.dy;
+
+    // Decrease fuel over time
+    rocket.fuel -= 0.1;
+    if (rocket.fuel <= 0) {
+        rocket.fuel = 0;
+        gameOver = true;
+    }
 
     // Check for collision with the floor
     if (rocket.y + rocket.height > canvasHeight) {
@@ -158,9 +166,25 @@ function checkFuelCellCollision() {
         ) {
             // Fuel cell collected
             fuelCells.splice(index, 1);
-            // Add points or fuel logic here
+            rocket.fuel = Math.min(rocket.fuel + 20, 100); // Increase fuel, max 100
         }
     });
+}
+
+function drawFuelBar() {
+    const barWidth = 100;
+    const barHeight = 10;
+    const barX = canvasWidth - barWidth - 20;
+    const barY = 20;
+
+    // Draw background bar
+    ctx.fillStyle = 'gray';
+    ctx.fillRect(barX, barY, barWidth, barHeight);
+
+    // Draw fuel level
+    const fuelWidth = (rocket.fuel / 100) * barWidth;
+    ctx.fillStyle = 'yellow';
+    ctx.fillRect(barX, barY, fuelWidth, barHeight);
 }
 
 // Main game loop
@@ -173,6 +197,7 @@ function gameLoop() {
         drawRocket();
         drawObstacles();
         drawFuelCells();
+        drawFuelBar(); // Draw the fuel bar
         checkCollision();
         checkFuelCellCollision();
         requestAnimationFrame(gameLoop);
