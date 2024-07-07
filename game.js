@@ -49,17 +49,21 @@ function updateRocket() {
     rocket.dy = Math.min(rocket.dy, maxFallSpeed);
     rocket.y += rocket.dy;
 
-    // Prevent the rocket from going out of bounds
+    // Check for collision with the floor
     if (rocket.y + rocket.height > canvasHeight) {
         rocket.y = canvasHeight - rocket.height;
         rocket.dy = 0;
+        gameOver = true;
     }
 
+    // Check for collision with the ceiling
     if (rocket.y < 0) {
         rocket.y = 0;
         rocket.dy = 0;
+        gameOver = true;
     }
 }
+
 
 // Clear the canvas for redrawing
 function clearCanvas() {
@@ -173,15 +177,10 @@ function gameLoop() {
         checkFuelCellCollision();
         requestAnimationFrame(gameLoop);
     } else {
-        // Display game over message and restart the game
-        ctx.fillStyle = 'white';
-        ctx.font = '30px Arial';
-        ctx.fillText('Game Over', canvasWidth / 2 - 75, canvasHeight / 2);
-        setTimeout(() => {
-            alert('Game Over');
-            init();
-            gameLoop();
-        }, 1000); // Wait 1 second before showing the alert
+        // Show the alert immediately when the game is over
+        alert('Game Over');
+        init();
+        gameLoop(); // Restart the game loop after initializing
     }
 }
 
