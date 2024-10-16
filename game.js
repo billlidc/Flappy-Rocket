@@ -1,7 +1,8 @@
 /*
  * Filename: game.js
  * Description: A web-based "Flappy Rocket" game where players control a rocket navigating through asteroid fields or space debris, collecting fuel cells along the way.
- * Author: Bill L.
+ * Author(s): Bill L.
+ * Timestamp: 10/15/24
  */
 
 const canvas = document.getElementById('gameCanvas');
@@ -12,7 +13,7 @@ const canvasHeight = canvas.height;
 
 let rocket, obstacles, fuelCells, gameOver;
 
-const gravity = 0.8;
+const gravity = 0.65;
 const thrust = -10;
 const maxFallSpeed = 10;
 const obstacleWidth = 50;
@@ -22,13 +23,17 @@ const spawnInterval = 2000; // milliseconds
 const fuelCellSize = 20;
 const fuelCellSpawnInterval = 3000; // milliseconds
 
+const rocketImage = new Image();
+rocketImage.src = 'images/rocket.png';
+
+
 // Initialize the game state
 function init() {
     rocket = {
         x: 50,
         y: canvasHeight / 2,
-        width: 30,
-        height: 30,
+        width: 50,
+        height: 50,
         dy: 0,
         fuel: 100 // Initial fuel level
     };
@@ -40,8 +45,9 @@ function init() {
 
 // Draw the rocket on the canvas
 function drawRocket() {
-    ctx.fillStyle = 'red';
-    ctx.fillRect(rocket.x, rocket.y, rocket.width, rocket.height);
+    // ctx.fillStyle = 'red';
+    // ctx.fillRect(rocket.x, rocket.y, rocket.width, rocket.height);
+    ctx.drawImage(rocketImage, rocket.x, rocket.y, rocket.width, rocket.height);
 }
 
 // Update the rocket's status
