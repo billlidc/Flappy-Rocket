@@ -9,9 +9,16 @@
 </head>
 <body>
     <p style="font-family: Arial, sans-serif; color: rgb(255, 255, 255); text-align: center; margin-bottom: 10px;">
-        Press Spacebar to Fly Up!
+        Press Spacebar or Tap to Fly Up!
     </p>
     <canvas id="gameCanvas" width="480" height="640"></canvas>
+    
+    <!-- Game Over Screen -->
+    <div id="gameOverScreen" style="display: none;">
+        <h1>Game Over</h1>
+        <button id="restartButton">Restart</button>
+    </div>
+    
     <script src="game.js"></script>
 </body>
 </html>

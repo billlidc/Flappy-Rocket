@@ -1,3 +1,4 @@
+/* Style for the body and the canvas */
 body {
     display: flex;
     flex-direction: column;
@@ -12,9 +13,37 @@ canvas {
     border: 1px solid #ffffff;
 }
 
+/* Updated style for the instructions text */
 p {
     font-family: Arial, sans-serif;
-    color: #000000;
+    color: #ffffff;  /* Changed to white */
     text-align: center;
     margin-bottom: 10px;
+}
+
+/* Style for the Game Over screen */
+#gameOverScreen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    z-index: 10; /* Make sure it appears over the canvas */
+}
+
+#gameOverScreen h1 {
+    font-size: 3rem;
+}
+
+#restartButton {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    background-color: yellow;
+    border: none;
+    border-radius: 5px;
 }
