@@ -13,26 +13,31 @@ const canvasHeight = canvas.height;
 
 let rocket, obstacles, fuelCells, gameOver;
 
-const gravity = 0.65;
+const gravity = 0.55;
 const thrust = -10;
 const maxFallSpeed = 10;
 const obstacleWidth = 50;
 const obstacleGap = 150;
 const obstacleSpeed = 2;
 const spawnInterval = 2000; // milliseconds
-const fuelCellSize = 20;
+const fuelCellWidth = 40;
+const fuelCellHeight = 20;
 const fuelCellSpawnInterval = 3000; // milliseconds
 
 const rocketImage = new Image();
 rocketImage.src = 'images/rocket.png';
+
+const fuelImage = new Image();
+fuelImage.src = 'images/fuel.png';  // Replace with the actual path to the fuel cell image
+
 
 // Initialize the game state
 function init() {
     rocket = {
         x: 50,
         y: canvasHeight / 2,
-        width: 50,
-        height: 50,
+        width: 40,
+        height: 40,
         dy: 0,
         fuel: 100 // Initial fuel level
     };
@@ -167,16 +172,19 @@ function checkCollision() {
 function createFuelCell() {
     const fuelCell = {
         x: canvasWidth,
-        y: Math.floor(Math.random() * (canvasHeight - fuelCellSize))
+        y: Math.floor(Math.random() * (canvasHeight - fuelCellHeight))
     };
     fuelCells.push(fuelCell);
 }
 
 // Draw fuel cells on the canvas
 function drawFuelCells() {
-    ctx.fillStyle = 'yellow';
+    // ctx.fillStyle = 'yellow';
+    // fuelCells.forEach(fuelCell => {
+    //     ctx.fillRect(fuelCell.x, fuelCell.y, fuelCellSize, fuelCellSize);
+    // });
     fuelCells.forEach(fuelCell => {
-        ctx.fillRect(fuelCell.x, fuelCell.y, fuelCellSize, fuelCellSize);
+        ctx.drawImage(fuelImage, fuelCell.x, fuelCell.y, fuelCellWidth, fuelCellHeight);
     });
 }
 
@@ -185,7 +193,7 @@ function updateFuelCells() {
     fuelCells.forEach(fuelCell => {
         fuelCell.x -= obstacleSpeed;
     });
-    if (fuelCells.length && fuelCells[0].x < -fuelCellSize) {
+    if (fuelCells.length && fuelCells[0].x < -fuelCellWidth) {
         fuelCells.shift();
     }
 }
@@ -194,9 +202,9 @@ function updateFuelCells() {
 function checkFuelCellCollision() {
     fuelCells.forEach((fuelCell, index) => {
         if (
-            rocket.x < fuelCell.x + fuelCellSize &&
+            rocket.x < fuelCell.x + fuelCellWidth &&
             rocket.x + rocket.width > fuelCell.x &&
-            rocket.y < fuelCell.y + fuelCellSize &&
+            rocket.y < fuelCell.y + fuelCellHeight &&
             rocket.y + rocket.height > fuelCell.y
         ) {
             // Fuel cell collected
