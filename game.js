@@ -26,7 +26,6 @@ const fuelCellSpawnInterval = 3000; // milliseconds
 const rocketImage = new Image();
 rocketImage.src = 'images/rocket.png';
 
-
 // Initialize the game state
 function init() {
     rocket = {
@@ -41,6 +40,38 @@ function init() {
     fuelCells = [];
     gameOver = false;
     lastObstacleX = canvasWidth;
+}
+
+// Create stars for the animated background
+const stars = [];
+for (let i = 0; i < 100; i++) {
+    stars.push({
+        x: Math.random() * canvasWidth,
+        y: Math.random() * canvasHeight,
+        size: Math.random() * 2 + 1,
+        speed: Math.random() * 2 + 1 // Different speed for each star
+    });
+}
+
+// Function to draw stars
+function drawStars() {
+    ctx.fillStyle = 'white';
+    stars.forEach(star => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fill();
+    });
+}
+
+// Update the position of stars for animation
+function updateStars() {
+    stars.forEach(star => {
+        star.x -= star.speed; // Move the star leftward
+        if (star.x < 0) {
+            star.x = canvasWidth; // Respawn star on the right
+            star.y = Math.random() * canvasHeight;
+        }
+    });
 }
 
 // Draw the rocket on the canvas
@@ -77,7 +108,6 @@ function updateRocket() {
         gameOver = true;
     }
 }
-
 
 // Clear the canvas for redrawing
 function clearCanvas() {
@@ -133,7 +163,6 @@ function checkCollision() {
     });
 }
 
-
 // Create a new fuel cell at a random position
 function createFuelCell() {
     const fuelCell = {
@@ -177,6 +206,7 @@ function checkFuelCellCollision() {
     });
 }
 
+// Draw the fuel bar
 function drawFuelBar() {
     const barWidth = 100;
     const barHeight = 10;
@@ -197,6 +227,8 @@ function drawFuelBar() {
 function gameLoop() {
     clearCanvas();
     if (!gameOver) {
+        updateStars();  // Update star positions
+        drawStars();    // Draw the animated stars
         updateRocket();
         updateObstacles();
         updateFuelCells();
@@ -214,7 +246,6 @@ function gameLoop() {
         gameLoop(); // Restart the game loop after initializing
     }
 }
-
 
 // Add event listener for spacebar to apply thrust
 document.addEventListener('keydown', (e) => {
