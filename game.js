@@ -255,9 +255,15 @@ function gameLoop() {
     }
 }
 
-// Add event listener for spacebar to apply thrust
+// Add event listeners for both keyboard and touch input
 document.addEventListener('keydown', (e) => {
     if (e.code === 'Space' && !gameOver) {
+        rocket.dy = thrust;
+    }
+});
+
+canvas.addEventListener('touchstart', (e) => {
+    if (!gameOver) {
         rocket.dy = thrust;
     }
 });
